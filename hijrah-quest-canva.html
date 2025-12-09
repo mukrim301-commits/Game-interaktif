@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hijrah Quest — Embed for Canva</title>
+  <style>
+    :root{--bg:#f7f3ee;--card:#fff;--accent:#0b6b3a;--muted:#666}
+    body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:#111}
+    .app{max-width:1000px;margin:12px auto;padding:14px}
+    header{display:flex;gap:12px;align-items:center}
+    h1{margin:0;font-size:20px}
+    .stage{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    .controls{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+    .btn{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
+    .btn.secondary{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    .sidebar{width:260px}
+    .hidden{display:none}
+    .option{border-radius:10px;padding:10px;border:1px solid #ddd;background:#fff;cursor:pointer;margin-bottom:8px}
+    .option.correct{background:#e9f8ef;border-color:green}
+    .option.wrong{background:#fdeaea;border-color:#c0392b}
+    .badge{display:inline-block;padding:6px 8px;background:#f1f1f1;border-radius:8px;margin:4px 4px 0 0}
+    #certificateCanvas{border:1px solid #ddd;width:100%}
+    .small{font-size:13px;color:var(--muted)}
+    @media(max-width:880px){.row{flex-direction:column}.sidebar{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="app stage" id="app">
+    <header>
+      <div style="width:56px;height:56px;background:#eee;border-radius:10px;display:flex;align-items:center;justify-content:center">
+        <img src="logo_school.png" alt="logo" id="logo" style="max-width:52px;max-height:52px;">
+      </div>
+      <div>
+        <h1>Hijrah Quest — Perjalanan Menuju Madinah (Canva Embed)</h1>
+        <div class="small">SDN Pisangcandi 4 — Cartoon Modern + Semi-Realistic.</div>
+      </div>
+    </header>
+
+    <div class="controls">
+      <button class="btn" onclick="goSlide(0)">Menu Awal</button>
+      <button class="btn secondary" onclick="goSlide(1)">Level 1</button>
+      <button class="btn secondary" onclick="goSlide(2)">Level 2</button>
+      <button class="btn secondary" onclick="goSlide(6)">Level 6</button>
+      <button class="btn" id="audioToggle" onclick="toggleAudio()">Audio: ON</button>
+    </div>
+
+    <main style="margin-top:12px">
+      <div id="slides">
+        <section class="slide" data-index="0">
+          <h2>Selamat datang di Hijrah Quest</h2>
+          <p>Game pembelajaran interaktif: pelajari kisah Hijrah Nabi Muhammad SAW ke Madinah melalui 6 level.</p>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn" onclick="goSlide(1)">Mulai Level 1</button>
+            <button class="btn secondary" onclick="goSlide(9)">Lihat Kuis</button>
+          </div>
+        </section>
+
+        <section class="slide hidden" data-index="1">
+          <h2>Level 1 — Kondisi Kaum Muslim di Makkah</h2>
+          <p>Klik tiga objek yang menunjukkan bentuk penindasan.</p>
+          <div id="l1objects" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+            <div class="option" data-correct="1">Abu Bakar (pendamping)</div>
+            <div class="option" data-correct="0">Pedang Perang</div>
+            <div class="option" data-correct="1">Peta Hijrah (rute)</div>
+            <div class="option" data-correct="0">Harta Kekayaan</div>
+            <div class="option" data-correct="1">Bekal Perjalanan</div>
+            <div class="option" data-correct="0">Pertunjukan</div>
+          </div>
+          <div style="margin-top:12px"><button class="btn" onclick="nextFrom(1)">Selesai Level 1</button></div>
+        </section>
+
+        <section class="slide hidden" data-index="2">
+          <h2>Level 2 — Gua Tsur</h2>
+          <p>Seret ikon yang melambangkan perlindungan ke pintu gua (laba-laba & sarang burung).</p>
+          <div style="display:flex;gap:12px;align-items:start">
+            <div style="flex:1">
+              <div id="dropzone" style="height:160px;border:2px dashed #ddd;border-radius:8px;display:flex;align-items:center;justify-content:center">
+                <div class="small">Drop items here (pintu gua)</div>
+              </div>
+              <div style="margin-top:8px">
+                <button class="btn" onclick="finishL2()">Selesai Level 2</button>
+              </div>
+            </div>
+            <div style="width:220px">
+              <div draggable="true" class="option" data-item="spider" ondragstart="dragStart(event)">Laba-laba</div>
+              <div draggable="true" class="option" data-item="nest" ondragstart="dragStart(event)">Sarang Burung</div>
+              <div draggable="true" class="option" data-item="cloud" ondragstart="dragStart(event)">Awan</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide hidden" data-index="3">
+          <h2>Level 3 — Rencana Hijrah & Tokoh</h2>
+          <p>Pilih peran yang benar/berkontribusi dalam rencana hijrah (lebih dari satu pilihan benar).</p>
+          <div id="l3opts" style="margin-top:8px">
+            <div class="option" data-correct="1">Ali (tidur di tempat Nabi)</div>
+            <div class="option" data-correct="1">Abu Bakar (pendamping)</div>
+            <div class="option" data-correct="1">Asma (membawa bekal)</div>
+            <div class="option" data-correct="0">Musyrik Pembawa Senjata</div>
+          </div>
+          <div style="margin-top:12px"><button class="btn" onclick="nextFrom(3)">Selesai Level 3</button></div>
+        </section>
+
+        <section class="slide hidden" data-index="4">
+          <h2>Level 4 — Mukjizat Gua Tsur</h2>
+          <p>Pilih jawaban yang paling tepat:</p>
+          <div style="margin-top:8px">
+            <div class="option" onclick="mcqAnswer(this,4,1)">Awan tebal</div>
+            <div class="option" onclick="mcqAnswer(this,4,0)">Gunung runtuh</div>
+            <div class="option" onclick="mcqAnswer(this,4,0)">Badai pasir besar</div>
+            <div class="option" onclick="mcqAnswer(this,4,1)">Laba-laba & burung menutupi pintu</div>
+          </div>
+        </section>
+
+        <section class="slide hidden" data-index="5">
+          <h2>Level 5 — Perjalanan Gurun</h2>
+          <p>Kumpulkan 4 item perbekalan. Klik tombol 'Kumpulkan' pada masing-masing.</p>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px">
+            <div class="card" style="padding:10px">
+              <div>Air</div><button class="btn" onclick="collect('air')">Kumpulkan</button>
+            </div>
+            <div class="card" style="padding:10px">
+              <div>Kurma</div><button class="btn" onclick="collect('kurma')">Kumpulkan</button>
+            </div>
+            <div class="card" style="padding:10px">
+              <div>Peta</div><button class="btn" onclick="collect('peta')">Kumpulkan</button>
+            </div>
+            <div class="card" style="padding:10px">
+              <div>Bekal</div><button class="btn" onclick="collect('bekal')">Kumpulkan</button>
+            </div>
+          </div>
+          <div style="margin-top:12px"><button class="btn" onclick="nextFrom(5)">Selesai Level 5</button></div>
+        </section>
+
+        <section class="slide hidden" data-index="6">
+          <h2>Level 6 — Tiba di Madinah & Persaudaraan</h2>
+          <p>Drag balok ke area untuk 'membangun' Masjid Quba sederhana.</p>
+          <div style="display:flex;gap:12px;align-items:start">
+            <div style="flex:1">
+              <div id="buildArea" style="height:160px;border:2px dashed #ddd;border-radius:8px;display:flex;align-items:center;justify-content:center">
+                <div class="small">Taruh 3 balok di sini</div>
+              </div>
+            </div>
+            <div style="width:220px">
+              <div draggable="true" class="option" data-item="block" ondragstart="dragStart(event)">Balok Batu</div>
+              <div draggable="true" class="option" data-item="lamp" ondragstart="dragStart(event)">Lampu</div>
+              <div draggable="true" class="option" data-item="flag" ondragstart="dragStart(event)">Bendera</div>
+            </div>
+          </div>
+          <div style="margin-top:12px"><button class="btn" onclick="finishL6()">Selesai Level 6</button></div>
+        </section>
+
+        <section class="slide hidden" data-index="7">
+          <h2>Refleksi Singkat</h2>
+          <p>Tulis satu kalimat: Apa hikmah hijrah menurutmu hari ini?</p>
+          <textarea id="reflection" style="width:100%;height:90px;padding:8px;border-radius:8px;border:1px solid #ddd"></textarea>
+          <div style="margin-top:8px;display:flex;gap:8px">
+            <button class="btn" onclick="saveReflection()">Simpan & Lanjut ke Kuis</button>
+            <button class="btn secondary" onclick="goSlide(9)">Lewati & ke Kuis</button>
+          </div>
+        </section>
+
+        <section class="slide hidden" data-index="8">
+          <h2>Selamat! Kamu Menyelesaikan Semua Level</h2>
+          <p>Badge yang didapat:</p>
+          <div id="badgelist" style="margin-top:8px"></div>
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button class="btn" onclick="goSlide(10)">Ambil Sertifikat</button>
+            <button class="btn secondary" onclick="goSlide(0)">Main Lagi</button>
+          </div>
+        </section>
+
+        <section class="slide hidden" data-index="9">
+          <h2>Kuis Evaluasi (Kurikulum Merdeka)</h2>
+          <ol id="quizList" style="padding-left:18px"></ol>
+          <div style="margin-top:12px"><button class="btn" onclick="submitQuiz()">Kirim Jawaban</button></div>
+        </section>
+
+        <section class="slide hidden" data-index="10">
+          <h2>Sertifikat — Hijrah Hero</h2>
+          <p>Isi nama siswa & kelas, lalu klik Generate → Download PNG.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <input id="certName" placeholder="Nama Siswa" style="padding:8px;border-radius:8px;border:1px solid #ddd" />
+            <input id="certClass" placeholder="Kelas / Sekolah" style="padding:8px;border-radius:8px;border:1px solid #ddd" />
+            <button class="btn" onclick="generateCertificate()">Generate Sertifikat</button>
+          </div>
+          <div style="margin-top:12px">
+            <canvas id="certificateCanvas" width="800" height="560"></canvas>
+          </div>
+          <div style="margin-top:8px">
+            <button class="btn" onclick="downloadCertificate()">Download PNG</button>
+            <button class="btn secondary" onclick="goSlide(0)">Selesai</button>
+          </div>
+        </section>
+
+      </div>
+    </main>
+    <footer style="margin-top:12px" class="small">
+      Template untuk Canva Embed. Ganti placeholder gambar dengan aset final. Guru: Mukrim Nugroho, S.Pd, Gr.
+    </footer>
+  </div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  let currentSlide = 0;
+  let voiceEnabled = true;
+  const state = { inventory:[], badges:[], builtBlocks:0, l2Dropped:[], reflections:[] };
+  const narration = {0:'Selamat datang di Hijrah Quest.',1:'Level satu...'};
+  const quizData = [
+    {q:'Hijrah dilakukan dari...', opts:['Madinah ke Makkah','Makkah ke Madinah','Makkah ke Habasyah'], a:1},
+    {q:'Siapa yang menemani Nabi ke Gua Tsur?', opts:['Umar','Abu Bakar','Ali'], a:1},
+    {q:'Siapa yang tidur menggantikan Nabi di rumahnya?', opts:['Ali bin Abi Thalib','Abu Bakar','Asma'], a:0},
+    {q:'Apa makna hijrah bagi kita?', opts:['Pindah ke arah kebaikan','Berwisata','Menjadi kaya'], a:0},
+    {q:'Ummu Ma\\'bad menerima mukjizat berupa...', opts:['Susu kambing','Emas','Air mancur'], a:0}
+  ];
+  function init(){ renderSlide(0); buildQuiz(); bindL1(); document.getElementById('audioToggle').textContent = 'Audio: ON'; }
+  function goSlide(idx){ currentSlide=idx; slides.forEach(s=>s.classList.add('hidden')); slides.find(x=>Number(x.dataset.index)===idx).classList.remove('hidden'); speak(narration[idx]||''); if(idx===8) renderBadges(); }
+  function nextFrom(idx){ if(idx===1){ const correct = document.querySelectorAll('#l1objects .option[data-correct=\"1\"].selected').length; if(correct<3){ alert('Tandai dulu 3 objek benar.'); return; } } if(idx===3){ const correct = document.querySelectorAll('#l3opts .option[data-correct=\"1\"].selected').length; if(correct<3){ alert('Pilih semua tokoh pendukung.'); return; } } if(idx===5){ const need=['air','kurma','peta','bekal']; if(!need.every(i=>state.inventory.includes(i))){ alert('Kumpulkan semua item dulu.'); return; } } goSlide(idx+1); }
+  function bindL1(){ document.querySelectorAll('#l1objects .option').forEach(el=>{ el.addEventListener('click', ()=>{ if(el.classList.contains('selected')){ el.classList.remove('selected'); el.style.opacity=1; return; } el.classList.add('selected'); el.style.opacity=0.85; if(el.dataset.correct==='1'){ if(!state.badges.includes('Kesabaran')) state.badges.push('Kesabaran'); } }); }); document.querySelectorAll('#l3opts .option').forEach(el=>{ el.addEventListener('click', ()=>{ el.classList.toggle('selected'); if(el.dataset.correct==='1' && el.classList.contains('selected')){ if(!state.badges.includes('Strategi')) state.badges.push('Strategi'); } }); }); }
+  let draggedItem=null; function dragStart(e){ draggedItem=e.target.dataset.item; e.dataTransfer?.setData('text/plain', draggedItem); }
+  const dropzone=document.getElementById('dropzone'); dropzone.addEventListener('dragover', e=>e.preventDefault()); dropzone.addEventListener('drop', e=>{ e.preventDefault(); const item = e.dataTransfer ? e.dataTransfer.getData('text/plain') : draggedItem; if(!item) return; if(!state.l2Dropped.includes(item)) state.l2Dropped.push(item); dropzone.innerHTML = '<div class=\"small\">Tersimpan: '+state.l2Dropped.join(', ')+'</div>'; if(state.l2Dropped.includes('spider') && state.l2Dropped.includes('nest')){ if(!state.badges.includes('Tawakkal')) state.badges.push('Tawakkal'); } });
+  const buildArea=document.getElementById('buildArea'); buildArea.addEventListener('dragover', e=>e.preventDefault()); buildArea.addEventListener('drop', e=>{ e.preventDefault(); const item = e.dataTransfer ? e.dataTransfer.getData('text/plain') : draggedItem; if(!item) return; state.builtBlocks += 1; buildArea.innerHTML = '<div class=\"small\">Balok terpasang: '+state.builtBlocks+'</div>'; if(state.builtBlocks>=3 && !state.badges.includes('Ukhuwah')) state.badges.push('Ukhuwah'); });
+  function finishL2(){ if(state.l2Dropped.includes('spider') && state.l2Dropped.includes('nest')){ alert('Benar — perlindungan tercipta, Anda mendapat badge Tawakkal'); goSlide(3); } else alert('Belum cukup. Sertakan laba-laba dan sarang burung.'); }
+  function finishL6(){ if(state.builtBlocks>=3){ alert('Bagus! Madinah mulai terbentuk.'); goSlide(7); } else alert('Masukkan 3 balok untuk menyelesaikan.'); }
+  function collect(item){ if(!state.inventory.includes(item)){ state.inventory.push(item); alert(item+' dikumpulkan'); if(state.inventory.length>=4 && !state.badges.includes('Perbekalan')) state.badges.push('Perbekalan'); } else alert('Sudah dikumpulkan'); }
+  function mcqAnswer(el,levelIdx,isCorrect){ if(isCorrect){ el.classList.add('correct'); if(!state.badges.includes('Iman')) state.badges.push('Iman'); alert('Jawaban benar! Badge Iman diperoleh. Lanjut ke Level 5.'); goSlide(5); } else { el.classList.add('wrong'); alert('Salah. Coba lagi.'); } }
+  function renderBadges(){ const el=document.getElementById('badgelist'); el.innerHTML=''; if(state.badges.length===0) el.textContent='—'; else state.badges.forEach(b=>{ const d=document.createElement('div'); d.className='badge'; d.textContent=b; el.appendChild(d); }); }
+  function saveReflection(){ const t=document.getElementById('reflection').value.trim(); if(!t){ alert('Tulis refleksi dulu.'); return; } state.reflections.push(t); alert('Refleksi tersimpan. Lanjut ke kuis.'); goSlide(9); }
+  function buildQuiz(){ const qList=document.getElementById('quizList'); qList.innerHTML=''; quizData.forEach((q,i)=>{ const li=document.createElement('li'); const div=document.createElement('div'); div.textContent=q.q; li.appendChild(div); q.opts.forEach((opt,j)=>{ const btn=document.createElement('button'); btn.className='option'; btn.style.display='block'; btn.style.marginTop='6px'; btn.textContent=opt; btn.onclick = ()=>{ document.querySelectorAll('#quizList li')[i].querySelectorAll('.option').forEach(x=>x.classList.remove('selected')); btn.classList.add('selected'); btn.dataset.ans=j; }; li.appendChild(btn); }); qList.appendChild(li); }); }
+  function submitQuiz(){ const answers = Array.from(document.querySelectorAll('#quizList li')).map((li,i)=>{ const sel = li.querySelector('.option.selected'); return sel ? Number(sel.dataset.ans) : null; }); let ok=true; answers.forEach((a,i)=>{ if(a!==quizData[i].a) ok=false; }); if(ok){ alert('Kuis benar semua! Kamu resmi mendapatkan sertifikat.'); if(!state.badges.includes('Hijrah Champion')) state.badges.push('Hijrah Champion'); goSlide(8); } else { alert('Beberapa jawaban masih salah. Periksa kembali.'); } }
+  function generateCertificate(){ const name=document.getElementById('certName').value.trim() || 'Nama Siswa'; const cls=document.getElementById('certClass').value.trim() || 'Kelas'; const canvas=document.getElementById('certificateCanvas'); const ctx=canvas.getContext('2d'); ctx.fillStyle='#fdfdf7'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#0b6b3a'; ctx.fillRect(0,0,canvas.width,80); ctx.fillStyle='#fff'; ctx.font='24px serif'; ctx.fillText('SERTIFIKAT HIJRAH HERO',20,50); ctx.fillStyle='#222'; ctx.font='18px serif'; ctx.fillText('Diberikan kepada:',20,140); ctx.font='28px serif'; ctx.fillText(name,20,190); ctx.font='16px serif'; ctx.fillText('Telah menyelesaikan game Pembelajaran Hijrah Quest dan menunjukkan pemahaman tentang hijrah.',20,230); ctx.font='16px serif'; ctx.fillText('Kelas / Sekolah: '+cls,20,280); ctx.font='14px serif'; ctx.fillText('Tanggal: '+(new Date()).toLocaleDateString('id-ID'),20,320); ctx.font='14px serif'; ctx.fillText('Guru Pembimbing: Mukrim Nugroho, S.Pd, Gr',20,360); ctx.font='14px serif'; ctx.fillText('Badge: '+(state.badges.join(', ')||'-'),20,400); ctx.fillStyle='#111'; ctx.fillRect(canvas.width-220,canvas.height-140,180,2); ctx.font='12px serif'; ctx.fillText('Tanda Tangan & Stempel', canvas.width-220, canvas.height-120); alert('Sertifikat digenerate. Klik Download PNG untuk menyimpan.'); }
+  function downloadCertificate(){ const canvas=document.getElementById('certificateCanvas'); const link=document.createElement('a'); link.href=canvas.toDataURL('image/png'); link.download='sertifikat_hijrah_' + (document.getElementById('certName').value.replace(/\\s+/g,'_')||'siswa') + '.png'; link.click(); }
+  function speak(text){ if(!voiceEnabled) return; if(!('speechSynthesis' in window)) return; try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='id-ID'; speechSynthesis.speak(u);}catch(e){console.warn(e);} }
+  function toggleAudio(){ voiceEnabled = !voiceEnabled; document.getElementById('audioToggle').textContent = 'Audio: ' + (voiceEnabled ? 'ON' : 'OFF'); }
+  function init2(){ init(); }
+  init();
+
+</script>
+</body>
+</html>
